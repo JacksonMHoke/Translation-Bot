@@ -1,0 +1,4 @@
+venv/
+__pycache__/
+.vscode/
+keys_access_token
