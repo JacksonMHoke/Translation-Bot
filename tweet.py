@@ -5,19 +5,22 @@ from collections import deque
 import time
 import json
 
+f=open('keys.json',)
+keys=json.load(f)
+
 # Authenticate to Twitter
-auth = tweepy.OAuthHandler("FExyXveI1drI9wjsj8QIb6sF2", 
-    "Z80bZofhHuW0jBT2YPFiqchHXMSPK52jRH8VH5PaMCC79FWTRN")
-auth.set_access_token("1189949666999226368-cMAeMG4TA3C7CJOk1NLyrWTMNQ9MGA", 
-    "oeKmEte19XxuLylWkypZGVGuY1aljt1P7WPYX5tjT1rZM")
+auth = tweepy.OAuthHandler(keys['api-key'], 
+    keys['secret-api-key'])
+auth.set_access_token(keys['access-token'], 
+    keys['secret-access-token'])
 
 api = tweepy.API(auth)
 
 #create a queue that stores the latest 3 tweets
 last_3 = deque()
-timeline = api.user_timeline("HapaGucci", count=3)
-for tweet in timeline:
-    last_3.appendleft(tweet)
+# timeline = api.user_timeline("HapaGucci", count=3)
+# for tweet in timeline:
+#     last_3.appendleft(tweet)
 
 while True:
     timeline = api.user_timeline("HapaGucci", count=3, tweet_mode="extended")
