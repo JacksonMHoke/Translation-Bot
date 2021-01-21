@@ -20,18 +20,18 @@ for tweet in timeline:
     last_3.appendleft(tweet)
 
 while True:
-    timeline = api.user_timeline("HapaGucci", count=3)
+    timeline = api.user_timeline("HapaGucci", count=3, tweet_mode="extended")
     for tweet in timeline:
         if tweet not in last_3:
             #if not found put it into list of found tweets
             last_3.append(tweet)
             #translate and tweet
-            curr = bulk_trans(tweet.text)
+            curr = bulk_trans(tweet.full_text)
             try:
                 api.update_status(curr)
             except:
                 print('couldn\'t tweet' + curr)
-            print(tweet.text)
+            print(tweet.full_text)
     #make sure queue only has 5 elements or less since we tracking last 5 tweets
     while len(last_3)>3:
         last_3.popleft()

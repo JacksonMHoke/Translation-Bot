@@ -110,12 +110,12 @@ langs_map = ['af',
 	'yo',
 	'zu']
 
-def bulk_trans(text:str, num_trans:int=7):
+def bulk_trans(text:str, num_trans:int=10):
   """
   Will translate str into num_trans different languages and then back into original language
 
   :param text: str, must
-  :param num_trans: int, default 7
+  :param num_trans: int, default 10
 
   :return: str
   """
