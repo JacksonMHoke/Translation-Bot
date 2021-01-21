@@ -1,7 +1,5 @@
 import tweepy
 from translator import bulk_trans
-from googletrans import Translator
-from collections import deque
 import time
 import json
 
@@ -16,26 +14,34 @@ auth.set_access_token(keys['access-token'],
 
 api = tweepy.API(auth)
 
-#create a queue that stores the latest 3 tweets
-last_3 = deque()
-# timeline = api.user_timeline("HapaGucci", count=3)
-# for tweet in timeline:
-#     last_3.appendleft(tweet)
+def check_or_write(filename:str, s1:str):
+    """
+    Will check if s1 is in a single line within filename and also write 
+    the tweet to filename if it is not inside. Returns true when s1 is
+    not inside, returns false when s1 is found
+
+    :param filename: str(must)
+    :param s1: str(must)
+
+    :return: bool
+    """
+    with open(filename, 'r', encoding='utf8') as f1:
+        f1.seek(0)
+        for line in f1:
+            if s1 in line:
+                return False
+    with open(filename, 'a', encoding='utf8') as f1:
+        f1.write(s1 + '\n')
+        return True
 
 while True:
-    timeline = api.user_timeline("HapaGucci", count=3, tweet_mode="extended")
+    timeline = api.user_timeline("HapaGucci", count=5, tweet_mode="extended")
     for tweet in timeline:
-        if tweet not in last_3:
-            #if not found put it into list of found tweets
-            last_3.append(tweet)
-            #translate and tweet
+        if check_or_write('tweet.txt', tweet.full_text):
             curr = bulk_trans(tweet.full_text)
             try:
                 api.update_status(curr)
             except:
                 print('couldn\'t tweet' + curr)
             print(tweet.full_text)
-    #make sure queue only has 5 elements or less since we tracking last 5 tweets
-    while len(last_3)>3:
-        last_3.popleft()
     time.sleep(60)
