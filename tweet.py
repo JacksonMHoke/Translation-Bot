@@ -25,15 +25,33 @@ def check_or_write(filename:str, s1:str):
 
     :return: bool
     """
+    #checks to see if s1 is already inside
     with open(filename, 'r', encoding='utf8') as f1:
         f1.seek(0)
-        for line in f1:
+        lines=f1.readlines()
+        l=0
+        for line in lines:
+            l+=1
             if s1 in line:
                 return False
+
+    #makes sure that there is not more than 20 lines in txt file
+    if l>20:
+        while l>20:
+            del lines[0]
+            l-=1
+        new_file=open(filename, "w+", encoding='utf8')
+        for line in lines:
+            new_file.write(line)
+        new_file.close()
+
+
+    #returns true and also writes down text into file at the end
     with open(filename, 'a', encoding='utf8') as f1:
         f1.write(s1 + '\n')
         return True
 
+#loops endlessly(60 sec interval) and checks,translates,and posts tweets
 while True:
     timeline = api.user_timeline("HapaGucci", count=5, tweet_mode="extended")
     for tweet in timeline:
@@ -42,6 +60,6 @@ while True:
             try:
                 api.update_status(curr)
             except:
-                print('couldn\'t tweet' + curr)
+                print('couldn\'t tweet: ' + curr)
             print(tweet.full_text)
     time.sleep(60)
