@@ -18,7 +18,8 @@ def check_or_write(filename:str, s1:str):
     """
     Will check if s1 is in a single line within filename and also write 
     the tweet to filename if it is not inside. Returns true when s1 is
-    not inside, returns false when s1 is found
+    not inside, returns false when s1 is found. Keeps line length of text
+    file less than 22
 
     :param filename: str(must)
     :param s1: str(must)
@@ -49,13 +50,14 @@ def check_or_write(filename:str, s1:str):
     #returns true and also writes down text into file at the end
     with open(filename, 'a', encoding='utf8') as f1:
         f1.write(s1 + '\n')
+        f1.close()
         return True
 
 #loops endlessly(60 sec interval) and checks,translates,and posts tweets
 while True:
     timeline = api.user_timeline("HapaGucci", count=5, tweet_mode="extended")
     for tweet in timeline:
-        if check_or_write('tweet.txt', tweet.full_text):
+        if check_or_write('tweet.txt', " ".join(tweet.full_text.splitlines())):
             curr = bulk_trans(tweet.full_text)
             try:
                 api.update_status(curr)
