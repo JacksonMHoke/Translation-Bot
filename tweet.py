@@ -12,7 +12,7 @@ auth = tweepy.OAuthHandler(keys['api-key'],
 auth.set_access_token(keys['access-token'], 
     keys['secret-access-token'])
 
-api = tweepy.API(auth)
+api = tweepy.API(auth, wait_on_rate_limit=True)
 
 def check_or_write(filename:str, s1:str):
     """
@@ -35,7 +35,6 @@ def check_or_write(filename:str, s1:str):
             l+=1
             if s1 in line:
                 return False
-
     #makes sure that there is not more than 20 lines in txt file
     if l>20:
         while l>20:
@@ -46,7 +45,6 @@ def check_or_write(filename:str, s1:str):
             new_file.write(line)
         new_file.close()
 
-
     #returns true and also writes down text into file at the end
     with open(filename, 'a', encoding='utf8') as f1:
         f1.write(s1 + '\n')
@@ -55,13 +53,10 @@ def check_or_write(filename:str, s1:str):
 
 #loops endlessly(60 sec interval) and checks,translates,and posts tweets
 while True:
-    timeline = api.user_timeline("HapaGucci", count=5, tweet_mode="extended")
+    timeline = api.user_timeline("Hapagucci", count=5, tweet_mode="extended")
     for tweet in timeline:
         if check_or_write('tweet.txt', " ".join(tweet.full_text.splitlines())):
             curr = bulk_trans(tweet.full_text)
-            try:
-                api.update_status(curr)
-            except:
-                print('couldn\'t tweet: ' + curr)
+            api.update_status(curr)
             print(tweet.full_text)
     time.sleep(60)
