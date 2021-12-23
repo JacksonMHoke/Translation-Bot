@@ -50,6 +50,7 @@ def check_or_write(filename:str, s1:str):
         f1.write(s1 + '\n')
         f1.close()
         return True
+        
 
 #loops endlessly(60 sec interval) and checks,translates,and posts tweets
 while True:

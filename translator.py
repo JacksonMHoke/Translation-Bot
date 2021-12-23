@@ -109,6 +109,7 @@ langs_map = ['af',
     'yi',
     'yo',
     'zu']
+    
 
 def bulk_trans(text:str, num_trans:int=4):
   """
