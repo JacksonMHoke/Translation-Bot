@@ -1,7 +1,7 @@
 # Translation-Bot
 
 # Description
-This bot takes my brothers tweets(@HapaGucci) and translates them through a random number of languages with the final language being back to english. It then
+This bot takes my brother's tweets(@HapaGucci) and translates them through a random number of languages and finally back into english. It then
 takes the translated tweet and posts it to the twitter account @BotsonHoke
 
 ![](https://github.com/JacksonMHoke/Translation-Bot/blob/main/thomas1.PNG)      ![](https://github.com/JacksonMHoke/Translation-Bot/blob/main/botson1.PNG)
